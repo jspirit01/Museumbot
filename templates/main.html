@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MuseumBot</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 class="logo">MuseumBot</h1>
+  </header>
+  <section class="container">
+    <article class="video-container">
+      <!-- 비디오 -->
+      <div class="video">
+        <video src="http://jooyeong/pythonanywhere.com/static/video/video.mp4" controls></video>
+      </div>
+      <!-- 자막 -->
+      <div class="subtitle">
+        <div class="scroll-area">
+          안녕하세요,<br>
+          광주과학기술원 Soft Computing & Interaction (SCI) 연구실 김주영, 이정하, 김주연 연구원입니다.
+          저희 연구팀은 ‘청각장애인을 위한 박물관 챗봇 디자인 연구’를 진행하고 있습니다.<br><br>
+
+          2020년 실시한 ‘청각장애인 대상 박물관 관람에 대한 설문 조사’ 결과, 농인이 역사와 전시에 관심은 많으나 정보 접근성 제한으로 인해 일반인에 비해 역사문화 콘텐츠를 누리지 못하고 있다는 것을 알게 되었습니다.
+          또한 비대면 사회로 인해 챗봇 플랫폼이 활발해지면서 각종 편의 서비스를 제공하고 있으나, 대부분의 챗봇 서비스가 텍스트와 음성을 위주로 정보를 제공하고 있습니다. 지난 2021년 4월에 실시된 ‘농인 대상 기존 챗봇 사용성 평가 설문’ 결과를 비추어 볼 때, 국어보다는 수어에 익숙한 청각장애인들이 이러한 기존 챗봇을 사용하는 데에 불편함이 있다는 것을 알게 되었습니다.
+          저희는 청각장애인을 위한 박물관 챗봇 디자인 연구를 통해 이러한 청인/농인 간 정보 접근성 격차를 개선하고자 합니다.
+
+          <br><br>
+          실험 절차는 다음과 같습니다.<br>
+          1. <b>'유물 해설 난이도 평가'</b>를 통해, 농인이 생각하는 현재 박물관에서 제공되는 해설의 난이도를 파악하고자 합니다.<br>
+          2. <b>'챗봇 사용 실험'</b>을 통해, 농인이 챗봇에게 주로 묻는 질문 데이터를 수집하고, 질문 유형 및 경향성을 파악합니다.<br>
+          추가적으로, <b>'국어 문해력 평가'</b>와 <b>'기본 설문조사'</b>를 통해 연구참여자의 기본 인구 통계를 파악하고자 합니다.<br><br>
+
+          양질의 연구를 위해 모든 실험 과정에 대하여 성의껏 답변해주시길 부탁드립니다.<br>
+          감사합니다.
+        </div>
+      </div>
+    </article>
+
+    <article class="task-container">
+      <h2>아래 버튼을 눌러 실험을 수행해주세요.</h2>
+      <div class="task-choice">
+        <a href="task1.html" class="link-task1">
+          <dl>
+            <dt>1. 자유 태스크</dt>
+            <dd>유물해설을 읽고, 궁금한 점 최소 5가지 질문하기</dd>
+            <dd>(총 10개 유물)</dd>
+          </dl>
+        </a>
+        <a href="task2.html" class="link-task2">
+          <dl>
+            <dt>2. 지정 태스크</dt>
+            <dd>챗봇에게 질문하여 주어진 문제 해결하기</dd>
+            <dd>(총 6개 문제)</dd>
+          </dl>
+        </a>
+      </div>
+    </article>
+  </section>
+</div>
+  <footer>@ Soft Computing & Interaction Lab. | GIST</footer>
+</body>
+</html>

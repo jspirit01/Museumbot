@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MuseumBot</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 class="logo"><a href="#">MuseumBot</a></h1>
+    <h2 class="page-title">2. 지정 태스크</h2>
+  </header>
+  <section class="container">
+    <div class="page-control">
+      <a href="#" class="link-prev">
+        <i class="material-icons">chevron_left</i>
+        <span>이전</span>
+      </a>
+      <div class="paging">1/5</div>
+      <a href="#" class="link-next">
+        <span>다음</span>
+        <i class="material-icons">chevron_right</i>
+      </a>
+    </div>
+    <div class="flex">
+      <article class="problem-container">
+        <h2>챗봇에게 질문하여 다음 문제를 해결해보세요.</h2>
+        <div class="problem">오늘 국립광주박물관에 방문하려고 합니다. 광주박물관은 몇 시까지 운영할까요?</div>
+        <input type="text" class="answer" placeholder="정답을 입력하세요.">
+      </article>
+      <article class="chat-container">
+        <div class="chat-thread">
+          <ul class="chat-list">
+            <li class="chatbot">
+              <span class="material-icons">smart_toy</span>
+              무엇을 질문하시겠습니까?
+            </li>
+          </ul>
+        </div>
+        <div class="chat-input">
+          <input type="text" id="question-text" name="question_id" placeholder="질문을 입력하세요.">
+          <button id="btn-question">질문하기</button>
+        </div>
+      </article>
+    </div>
+  </section>
+    </div>
+  <footer>@ Soft Computing & Interaction Lab. | GIST</footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+  <script src="../static/js/jquery-1.11.2.js"></script>
+  <script src="js/chat.js"></script>
+  <script>
+
+
+    const question  = function() {
+      const question = $('#question-text').val();
+      const title = $('.title').text();
+      if (question.length > 0) {
+        $('.chat-list').append(`
+      <li class="me">
+        <span class="material-icons">face</span>
+        ${question}
+      </li>
+    `)
+        $(".chat-thread").animate({scrollTop: $('.chat-list').height()}, 1000);
+      $.ajax({
+        type: 'POST',
+        async: false,                                  <!--[GET / POST] 둘중 하나 선택-->
+        url: '/get_answer',
+        data: {
+          'question_id': question,
+          'title': title
+        },
+        dataType: 'text',
+        success: function (result) {
+          // alert("result = " + result);
+          answer(result)    // 답변 출력 (result == 답변 내용)
+        },
+        error: function (xtr, status, error) {
+          alert(xtr + ":" + status + ":" + error);
+        }
+
+      });
+
+      }
+
+    }
+
+    const answer = function(bot_answer){
+    const answer = bot_answer//{{bot_answer|tojson}};
+    if(answer.length > 0){
+      $('.chat-list').append(`
+        <li class="chatbot">
+            <span class="material-icons">smart_toy</span>
+            ${answer}
+        </li>
+        `)
+      $('#question-text').val('')
+    }
+    $(".chat-thread").animate({ scrollTop: $('.chat-list').height() }, 1000);
+  }
+
+  $('#btn-question').on({
+  click: question,
+  // mouseup: question,
+  keyup:function(key) {
+    if(key.keyCode==13) {
+      question()
+    }
+  }
+  });
+
+  $('#question-text').on({
+  keyup:function(key) {
+    if(key.keyCode==13) {
+      question()
+    }
+  }
+  });
+
+  $('.logo').on('click',function(e){
+    e.preventDefault();
+    const result=confirm('메인으로 가시겠습니까?')
+    if(result){
+      location.href='main.html'
+    }
+  })
+
+    $('.link-prev').on('click',function(e){
+    e.preventDefault();
+    const paging = $('.paging').text();
+    if(paging !== '1/5') {
+      $.ajax({
+        type: 'POST',
+        async: false,                                  <!--[GET / POST] 둘중 하나 선택-->
+        url: '/prev_paging_task2',
+        data: {'paging': paging},
+        dataType: 'json',
+        success: function (result) {
+          loadpaging(result);
+        },
+        error: function (xtr, status, error) {
+          alert(xtr + ":" + status + ":" + error);
+        }
+      });
+    }
+  })
+
+  $('.link-next').on('click',function(e){
+    e.preventDefault();
+    const paging = $('.paging').text();
+    const user_answer = $('.answer').val();
+    if(paging !== '5/5'){
+      const result = confirm("정답을 제출하고 다음 문제로 이동하시겠습니까?\n 입력한 답: " + user_answer);
+      if(result) {
+        $.ajax({
+          type: 'POST',
+          async: false,                                  <!--[GET / POST] 둘중 하나 선택-->
+          url: '/next_paging_task2',
+          data: {'paging': paging, 'user_answer': user_answer},
+          dataType: 'json',
+          success: function (result) {
+            loadpaging(result);
+          },
+          error: function (xtr, status, error) {
+            alert(xtr + ":" + status + ":" + error);
+          }
+        });
+      }
+    }
+    else{
+      const result=confirm('이 문제가 마지막 문제입니다. 정답을 제출하고 메인으로 돌아가시겠습니까?\n 입력한 답: ' + user_answer)
+      if(result){
+        $.ajax({
+          type: 'POST',
+          async: false,                                  <!--[GET / POST] 둘중 하나 선택-->
+          url: '/custom_logging',
+          data: {'paging': paging, 'user_answer': user_answer},
+          dataType: 'text',
+          success: function (result) {
+            location.href='main.html'
+          },
+          error: function (xtr, status, error) {
+            alert(xtr + ":" + status + ":" + error);
+          }
+        });
+    }
+    }
+  })
+
+    const loadpaging = function(result){
+    $('.paging').text(result['paging']);
+    $('.problem').text(result['problem']);
+    $('.answer').val('');
+    }
+
+  </script>
+</body>
+</html>
