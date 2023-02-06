@@ -2,7 +2,7 @@
 
 - flask
 - python 3.8
-- pythonanywhere로 배포 (jooyeong.pythonanywhere.com)
+- pythonanywhere로 배포 (jooyeong.pythonanywhere.com) (DEPRECATED..)
 
 ### Task 1 : 자유태스크
 
